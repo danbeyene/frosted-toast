@@ -17,7 +17,7 @@ class FrostedToastOptions {
   const FrostedToastOptions({
     this.message = '',
     this.alignment = Alignment.bottomCenter,
-    this.isDarkBackground = false,
+    this.isDarkBackground = true,
     this.insetsPadding = const EdgeInsets.symmetric(horizontal: 8),
     this.child,
     this.duration = const Duration(seconds: 3),
