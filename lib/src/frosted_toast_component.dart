@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
@@ -43,6 +44,7 @@ class _FrostedToastComponentState extends State<FrostedToastComponent>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<Offset> _slideAnimation;
+  Timer? _dismissTimer;
 
   FrostedToastOptions get options => widget.options;
   bool isBottomPosition = false;
@@ -68,19 +70,33 @@ class _FrostedToastComponentState extends State<FrostedToastComponent>
     _animationController.forward();
 
     if (options.autoDismiss) {
-      Future.delayed(options.duration, () {
-        _animationController.reverse().then((_) => widget.onDismiss());
-      });
+      _dismissTimer = Timer(options.duration, _safeDismiss);
     }
   }
 
-  void dismiss() async {
-    await _animationController.reverse();
-    widget.onDismiss();
+  void _safeDismiss() async {
+    if (!mounted) return;
+    
+    try {
+      await _animationController.reverse();
+      if (mounted) {
+        widget.onDismiss();
+      }
+    } catch (e) {
+      // If there's an error with the animation, still call onDismiss
+      if (mounted) {
+        widget.onDismiss();
+      }
+    }
+  }
+
+  void dismiss() {
+    _safeDismiss();
   }
 
   @override
   void dispose() {
+    _dismissTimer?.cancel();
     _animationController.dispose();
     super.dispose();
   }
@@ -137,11 +153,6 @@ class _FrostedToastComponentState extends State<FrostedToastComponent>
                             ),
                       ),
                       GestureDetector(
-                        // onTap: () {
-                        //   _animationController
-                        //       .reverse()
-                        //       .then((_) => widget.onDismiss());
-                        // },
                         onTap: dismiss,
                         child: Icon(
                           Icons.close,

@@ -36,7 +36,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   void onShowToast() {
     FrostedToastService.showToast(
-      context,
       options: const FrostedToastOptions(
         message: 'Hello, Frosted Toast!',
         alignment: Alignment.bottomCenter,
@@ -56,7 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onShowErrorToast() {
     FrostedToastService.showToast(
-      context,
       options: const FrostedToastOptions(
         message: 'Error Occurred!',
         alignment: Alignment.topCenter,
@@ -76,7 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void onShowLoadingToast() {
     FrostedToastService.showToast(
-      context,
       options: const FrostedToastOptions(
         alignment: Alignment.bottomCenter,
         autoDismiss: false,

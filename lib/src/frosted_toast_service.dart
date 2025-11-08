@@ -25,8 +25,7 @@ class FrostedToastService {
 
   static bool get isInitialized => _overlayKey.currentState?.mounted == true;
 
-  static void showToast(
-    BuildContext context, {
+  static void showToast({
     FrostedToastOptions options = const FrostedToastOptions(),
   }) {
     _checkInitialize();
